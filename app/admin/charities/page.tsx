@@ -77,9 +77,13 @@ export default function AdminCharitiesPage() {
 
     const handleDelete = async (id: string) => {
         if (!confirm('Delete this charity? This cannot be undone.')) return
-        await supabase.from('charities').delete().eq('id', id)
-        setMessage('Charity deleted.')
-        fetchCharities()
+        const { error } = await supabase.from('charities').delete().eq('id', id)
+        if (error) {
+            setMessage('⚠️ Error: Cannot delete this charity! It is currently linked to active user subscriptions. Deactivate it instead.')
+        } else {
+            setMessage('Charity deleted successfully.')
+            fetchCharities()
+        }
     }
 
     return (
