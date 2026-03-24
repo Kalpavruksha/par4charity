@@ -36,10 +36,14 @@ export async function POST(req: NextRequest) {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const stripe_sub = await stripe.subscriptions.retrieve(session.subscription as string) as any
 
-                // Get charity UUID from slug if we stored slug
+                // Get charity UUID from slug
                 let charityUUID: string | null = null
                 if (charityId) {
-                    const { data: charity } = await supabaseAdmin.from('charities').select('id').or(`id.eq.${charityId},slug.eq.${charityId}`).maybeSingle()
+                    const { data: charity, error: charErr } = await supabaseAdmin.from('charities')
+                        .select('id')
+                        .eq('slug', charityId)
+                        .maybeSingle()
+                    if (charErr) console.error('Charity lookup error:', charErr)
                     charityUUID = charity?.id || null
                 }
 
