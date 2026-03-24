@@ -8,10 +8,7 @@ export async function POST(req: NextRequest) {
         const { data: { user } } = await supabase.auth.getUser()
         if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-        const { plan, charityId, charityPercent } = await req.json()
-
-        const planConfig = PLANS[plan as keyof typeof PLANS]
-        if (!planConfig) return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
+        const { plan, charityId, charityPercent, amount, charityName } = await req.json()
 
         // Get or create Stripe customer
         const { data: profile } = await supabase.from('profiles').select('email').eq('id', user.id).single()
@@ -30,6 +27,34 @@ export async function POST(req: NextRequest) {
         }
 
         const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+
+        if (plan === 'onetime') {
+            const session = await stripe.checkout.sessions.create({
+                customer: customerId,
+                payment_method_types: ['card'],
+                line_items: [{
+                    price_data: {
+                        currency: 'gbp',
+                        product_data: { name: `Donation to ${charityName}` },
+                        unit_amount: (amount || 50) * 100, // £50
+                    },
+                    quantity: 1,
+                }],
+                mode: 'payment',
+                success_url: `${appUrl}/charities/${charityId}?donated=1`,
+                cancel_url: `${appUrl}/charities/${charityId}?cancelled=1`,
+                metadata: {
+                    user_id: user.id,
+                    type: 'donation',
+                    charity_id: charityId || '',
+                    donation_amount: String(amount || 50)
+                }
+            })
+            return NextResponse.json({ url: session.url })
+        }
+
+        const planConfig = PLANS[plan as keyof typeof PLANS]
+        if (!planConfig) return NextResponse.json({ error: 'Invalid plan' }, { status: 400 })
 
         const session = await stripe.checkout.sessions.create({
             customer: customerId,

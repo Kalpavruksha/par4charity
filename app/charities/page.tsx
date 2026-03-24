@@ -6,12 +6,12 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 const charities = [
-    { icon: '⛳', name: 'Golf Foundation', category: 'Youth & Sport', description: 'Introducing golf to young people across the UK, building confidence and life skills through sport.', raised: '£12,400', featured: true },
-    { icon: '💚', name: 'Macmillan Cancer Support', category: 'Health', description: 'Supporting people living with cancer through expert nurses, financial guidance, and emotional support.', raised: '£28,700', featured: true },
-    { icon: '🌿', name: 'WWF', category: 'Environment', description: 'Working to conserve nature and reduce the most pressing threats to biodiversity on Earth.', raised: '£9,100', featured: false },
-    { icon: '❤️', name: 'British Heart Foundation', category: 'Health', description: 'Funding vital research into heart and circulatory diseases that kill and disable millions.', raised: '£18,300', featured: false },
-    { icon: '🌊', name: 'RNLI', category: 'Emergency Services', description: 'Saving lives at sea with lifeboat and lifeguard services around the UK and Ireland.', raised: '£7,600', featured: false },
-    { icon: '🧠', name: "Alzheimer's Society", category: 'Health', description: 'Supporting people affected by dementia through care, research and brilliant staff.', raised: '£15,200', featured: true },
+    { id: 'golf-foundation', icon: '⛳', name: 'Golf Foundation', category: 'Youth & Sport', description: 'Introducing golf to young people across the UK, building confidence and life skills through sport.', raised: '£12,400', featured: true },
+    { id: 'macmillan', icon: '💚', name: 'Macmillan Cancer Support', category: 'Health', description: 'Supporting people living with cancer through expert nurses, financial guidance, and emotional support.', raised: '£28,700', featured: true },
+    { id: 'wwf', icon: '🌿', name: 'WWF', category: 'Environment', description: 'Working to conserve nature and reduce the most pressing threats to biodiversity on Earth.', raised: '£9,100', featured: false },
+    { id: 'bhf', icon: '❤️', name: 'British Heart Foundation', category: 'Health', description: 'Funding vital research into heart and circulatory diseases that kill and disable millions.', raised: '£18,300', featured: false },
+    { id: 'rnli', icon: '🌊', name: 'RNLI', category: 'Emergency Services', description: 'Saving lives at sea with lifeboat and lifeguard services around the UK and Ireland.', raised: '£7,600', featured: false },
+    { id: 'alzheimers', icon: '🧠', name: "Alzheimer's Society", category: 'Health', description: 'Supporting people affected by dementia through care, research and brilliant staff.', raised: '£15,200', featured: true },
 ]
 
 export default function CharitiesPage() {
@@ -120,7 +120,7 @@ export default function CharitiesPage() {
                                             <p className="charity-desc">{charity.description}</p>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <div className="charity-raised">💚 {charity.raised} raised</div>
-                                                <Link href="/subscribe" className="btn btn-outline btn-sm">Support</Link>
+                                                <Link href={`/charities/${charity.id}`} className="btn btn-outline btn-sm">Support</Link>
                                             </div>
                                         </div>
                                     </div>

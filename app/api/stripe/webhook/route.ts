@@ -31,11 +31,6 @@ export async function POST(req: NextRequest) {
                 const charityId = meta.charity_id || null
                 const charityPercent = parseInt(meta.charity_percent || '10')
 
-                if (!userId || !plan || !session.subscription) break
-
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                const stripe_sub = await stripe.subscriptions.retrieve(session.subscription as string) as any
-
                 // Get charity UUID from slug
                 let charityUUID: string | null = null
                 if (charityId) {
@@ -46,6 +41,20 @@ export async function POST(req: NextRequest) {
                     if (charErr) console.error('Charity lookup error:', charErr)
                     charityUUID = charity?.id || null
                 }
+
+                if (meta.type === 'donation' && charityUUID && meta.donation_amount) {
+                    const amt = parseInt(meta.donation_amount)
+                    console.log(`Processing £${amt} independent donation to ${charityId}`)
+                    await supabaseAdmin.rpc('increment_charity_raised', {
+                        cid: charityUUID, amount: amt
+                    })
+                    break // Stop processing, this is not a subscription
+                }
+
+                if (!userId || !plan || !session.subscription) break
+
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const stripe_sub = await stripe.subscriptions.retrieve(session.subscription as string) as any
 
                 // Upsert subscription
                 await supabaseAdmin.from('subscriptions').upsert({

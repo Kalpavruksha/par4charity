@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { generateDrawNumbers, calculatePrizePool, processDraw, type DrawMode } from '@/lib/draw-engine'
+import { notifyWinner } from '@/app/actions'
 
 interface Draw {
     id: string
@@ -145,6 +146,16 @@ export default function AdminDrawsPage() {
                         verification_status: 'pending',
                         payout_status: 'pending',
                     })
+
+                    // Extract email and send notification
+                    const { data: prof } = await supabase.from('profiles').select('email').eq('id', result.userId).single()
+                    if (prof?.email) {
+                        try {
+                            await notifyWinner(result.userId, prof.email, result.matchCount, result.prizeAmount)
+                        } catch (emailErr) {
+                            console.error('Failed to dispatch winner email:', emailErr)
+                        }
+                    }
                 }
             }
 
