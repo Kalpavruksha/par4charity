@@ -14,7 +14,32 @@ Par4Charity is a production-ready, full-stack SaaS platform combining automatic 
 
 ---
 
-## 🚀 Key Technical Highlights (PRD Fulfillment)
+## 🚀 Architecture Data Flow
+
+```mermaid
+graph TD
+    %% User Interactions
+    User((Registered User)) -->|1. Subscribe to Play| Stripe[Stripe Checkout API]
+    User -->|2. Submits Golf Scores| DB[(Supabase PostgreSQL)]
+    User -->|3. Selects Supported Charity| DB
+    
+    %% Backend Webhook
+    Stripe -->|4. checkout.session.completed| Webhook[Next.js Webhook]
+    Webhook -->|5. Activates Subscription & Profile| DB
+    
+    %% Admin System & Draw Engine
+    Admin((System Admin)) -->|6. Run Monthly Simulation| Engine{Draw Simulation Engine}
+    Engine -->|Scans all active| DB
+    Engine -->|Calculates Math Pools| Math[Jackpot / 4-Match / 3-Match Pools]
+    
+    %% Publishing Results
+    Math -->|7. Publish Results| DB
+    Admin -->|8. Manually Approve Payouts| Admin
+    Admin -->|Triggers Notification| Email[Email Dispatch System]
+    Email -->|Alert Winner!| User
+```
+
+## 🧠 Key Technical Highlights (PRD Fulfillment)
 
 ### 1. The Rolling 5-Score Algorithm
 A complex PostgreSQL Database Trigger (`enforce_score_limit`) mathematically limits every user to exactly 5 active scores. The moment a 6th score is submitted, the trigger strictly identifies and purges the oldest chronological record, automating the rolling window entirely at the data layer instead of risking client-side desync.
