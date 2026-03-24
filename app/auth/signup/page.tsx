@@ -41,7 +41,7 @@ function SignupForm() {
         <div className="auth-page">
             <div className="auth-card animate-fade-up">
                 <div className="auth-logo">
-                    <div className="nav-logo" style={{ fontSize: '1.5rem', display: 'inline-block' }}>Par4Charity</div>
+                    <Link href="/" className="nav-logo" style={{ fontSize: '1.5rem', display: 'inline-block', textDecoration: 'none' }}>Par4Charity</Link>
                 </div>
                 <h1 className="auth-title">Create your account</h1>
                 <p className="auth-subtitle">Start playing for good. No commitment needed.</p>

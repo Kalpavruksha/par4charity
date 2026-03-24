@@ -1,6 +1,9 @@
+'use client'
+
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import { useState } from 'react'
 
 const charities = [
     { icon: '⛳', name: 'Golf Foundation', category: 'Youth & Sport', description: 'Introducing golf to young people across the UK, building confidence and life skills through sport.', raised: '£12,400', featured: true },
@@ -12,6 +15,15 @@ const charities = [
 ]
 
 export default function CharitiesPage() {
+    const [selectedCategory, setSelectedCategory] = useState('All')
+    const [searchQuery, setSearchQuery] = useState('')
+
+    const filteredCharities = charities.filter(c => {
+        const matchesCategory = selectedCategory === 'All' || c.category === selectedCategory
+        const matchesSearch = c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.description.toLowerCase().includes(searchQuery.toLowerCase())
+        return matchesCategory && matchesSearch
+    })
+
     return (
         <>
             <Navbar />
@@ -39,12 +51,23 @@ export default function CharitiesPage() {
                     <div className="container" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
                         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                             {['All', 'Health', 'Youth & Sport', 'Environment', 'Emergency Services'].map((cat) => (
-                                <button key={cat} className={`badge ${cat === 'All' ? 'badge-primary' : 'badge-muted'}`} style={{ cursor: 'pointer', padding: '0.4rem 1rem', fontSize: '0.8rem' }}>
+                                <button
+                                    key={cat}
+                                    onClick={() => setSelectedCategory(cat)}
+                                    className={`badge ${selectedCategory === cat ? 'badge-primary' : 'badge-muted'}`}
+                                    style={{ cursor: 'pointer', padding: '0.4rem 1rem', fontSize: '0.8rem' }}
+                                >
                                     {cat}
                                 </button>
                             ))}
                         </div>
-                        <input className="form-input" placeholder="Search charities..." style={{ maxWidth: 240, padding: '0.5rem 1rem', fontSize: '0.875rem' }} />
+                        <input
+                            className="form-input"
+                            placeholder="Search charities..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            style={{ maxWidth: 240, padding: '0.5rem 1rem', fontSize: '0.875rem' }}
+                        />
                     </div>
                 </section>
 
@@ -79,24 +102,30 @@ export default function CharitiesPage() {
                 {/* All Charities */}
                 <section className="section-sm" style={{ borderTop: '1px solid var(--color-border)' }}>
                     <div className="container">
-                        <h2 style={{ fontSize: '1.4rem', marginBottom: '1.5rem' }}>All Charities</h2>
+                        <h2 style={{ fontSize: '1.4rem', marginBottom: '1.5rem' }}>Active Charities</h2>
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
-                            {charities.map((charity) => (
-                                <div key={charity.name} className="charity-card">
-                                    <div className="charity-banner">{charity.icon}</div>
-                                    <div className="charity-body">
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                                            <h3 className="charity-name" style={{ fontSize: '1.05rem' }}>{charity.name}</h3>
-                                            <span className="badge badge-muted" style={{ fontSize: '0.65rem', flexShrink: 0 }}>{charity.category}</span>
-                                        </div>
-                                        <p className="charity-desc">{charity.description}</p>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <div className="charity-raised">💚 {charity.raised} raised</div>
-                                            <Link href="/subscribe" className="btn btn-outline btn-sm">Support</Link>
+                            {filteredCharities.length === 0 ? (
+                                <div style={{ gridColumn: '1 / -1', padding: '3rem', textAlign: 'center', color: 'var(--color-text-muted)' }}>
+                                    No charities match your search criteria.
+                                </div>
+                            ) : (
+                                filteredCharities.map((charity) => (
+                                    <div key={charity.name} className="charity-card">
+                                        <div className="charity-banner">{charity.icon}</div>
+                                        <div className="charity-body">
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
+                                                <h3 className="charity-name" style={{ fontSize: '1.05rem' }}>{charity.name}</h3>
+                                                <span className="badge badge-muted" style={{ fontSize: '0.65rem', flexShrink: 0 }}>{charity.category}</span>
+                                            </div>
+                                            <p className="charity-desc">{charity.description}</p>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <div className="charity-raised">💚 {charity.raised} raised</div>
+                                                <Link href="/subscribe" className="btn btn-outline btn-sm">Support</Link>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            )}
                         </div>
                     </div>
                 </section>

@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 
+import Navbar from '@/components/Navbar'
+
 const PLANS = {
     monthly: { name: 'Monthly', price: '£9.99', per: '/month', amount: 999 },
     yearly: { name: 'Yearly', price: '£99.99', per: '/year', amount: 9999, badge: 'Best Value' },
@@ -69,9 +71,10 @@ function SubscribeContent() {
         <div style={{
             minHeight: '100vh',
             background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(108,99,255,0.1) 0%, transparent 60%), var(--color-bg)',
-            padding: '5rem 1rem 3rem',
+            paddingTop: '5rem',
         }}>
-            <div style={{ maxWidth: 720, margin: '0 auto' }}>
+            <Navbar />
+            <div style={{ maxWidth: 720, margin: '2rem auto 3rem', padding: '0 1rem' }}>
                 {/* Logo */}
                 <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                     <Link href="/" className="nav-logo" style={{ fontSize: '1.5rem', display: 'inline-block' }}>Par4Charity</Link>
