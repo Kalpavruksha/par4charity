@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const userNavItems = [
     { href: '/dashboard', label: 'Overview', icon: '🏠' },
@@ -20,6 +20,18 @@ export default function DashboardSidebar() {
     const router = useRouter()
     const supabase = createClient()
     const [loggingOut, setLoggingOut] = useState(false)
+    const [isAdmin, setIsAdmin] = useState(false)
+
+    useEffect(() => {
+        const checkAdmin = async () => {
+            const { data: { user } } = await supabase.auth.getUser()
+            if (user) {
+                const { data } = await supabase.from('profiles').select('is_admin').eq('id', user.id).maybeSingle()
+                setIsAdmin(data?.is_admin || false)
+            }
+        }
+        checkAdmin()
+    }, [supabase])
 
     const handleLogout = async () => {
         setLoggingOut(true)
@@ -48,7 +60,12 @@ export default function DashboardSidebar() {
                 })}
             </nav>
 
-            <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--color-border)' }}>
+            <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {isAdmin && (
+                    <Link href="/admin/reports" className="btn btn-gold btn-sm w-full" style={{ justifyContent: 'center' }}>
+                        ⚡ Admin Panel
+                    </Link>
+                )}
                 <button
                     onClick={handleLogout}
                     disabled={loggingOut}
@@ -58,6 +75,6 @@ export default function DashboardSidebar() {
                     <span>🚪</span> {loggingOut ? 'Logging out...' : 'Log Out'}
                 </button>
             </div>
-        </aside>
+        </aside >
     )
 }
