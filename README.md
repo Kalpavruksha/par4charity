@@ -5,7 +5,7 @@
 > A production-ready SaaS platform that combines golf score tracking, algorithmic monthly prize draws, and charitable giving — built on Next.js 14, Supabase, and Stripe.
 
 ---
-
+ 
 ## 🔗 Live Links
 
 | Resource | URL |
