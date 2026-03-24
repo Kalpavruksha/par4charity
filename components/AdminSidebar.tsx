@@ -55,7 +55,19 @@ export default function AdminSidebar() {
                 </Link>
             </nav>
 
-            <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--color-border)' }}>
+            <div style={{ marginTop: 'auto', paddingTop: '1rem', borderTop: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <button
+                    onClick={() => {
+                        const currentTheme = document.documentElement.getAttribute('data-theme')
+                        const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+                        document.documentElement.setAttribute('data-theme', newTheme)
+                        localStorage.setItem('theme', newTheme)
+                    }}
+                    className="sidebar-item"
+                    style={{ width: '100%', textAlign: 'left' }}
+                >
+                    <span>🌓</span> Toggle Theme
+                </button>
                 <button
                     onClick={handleLogout}
                     disabled={loggingOut}

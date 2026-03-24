@@ -61,6 +61,41 @@
   --font-display: 'Playfair Display', Georgia, serif;
 }
 
+[data-theme='dark'] {
+  --color-bg: #09090f;
+  --color-bg-2: #12121a;
+  --color-bg-3: #1a1a24;
+
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-surface-hover: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-hover: rgba(255, 255, 255, 0.2);
+
+  --color-primary: #6c63ff;
+  --color-primary-light: #8b85ff;
+  --color-primary-dark: #4d46e6;
+  --color-primary-glow: rgba(108, 99, 255, 0.35);
+
+  --color-accent: #00d4aa;
+  --color-accent-light: #33e2c2;
+  --color-accent-dark: #00b38f;
+  --color-accent-glow: rgba(0, 212, 170, 0.35);
+
+  --color-gold: #fbbf24;
+  --color-gold-light: #fcd34d;
+  --color-gold-glow: rgba(251, 191, 36, 0.35);
+
+  --color-text: #ffffff;
+  --color-text-muted: #a1a1aa;
+  --color-text-dim: #71717a;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-glow-primary: 0 0 40px rgba(108, 99, 255, 0.2);
+  --shadow-glow-accent: 0 0 40px rgba(0, 212, 170, 0.2);
+}
+
 /* =============================================
    RESET & BASE
    ============================================= */

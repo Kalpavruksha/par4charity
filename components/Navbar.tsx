@@ -6,12 +6,25 @@ import Link from 'next/link'
 export default function Navbar() {
     const [scrolled, setScrolled] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
+    const [theme, setTheme] = useState('light')
 
     useEffect(() => {
         const onScroll = () => setScrolled(window.scrollY > 20)
         window.addEventListener('scroll', onScroll)
+
+        const savedTheme = localStorage.getItem('theme') || 'light'
+        setTheme(savedTheme)
+        document.documentElement.setAttribute('data-theme', savedTheme)
+
         return () => window.removeEventListener('scroll', onScroll)
     }, [])
+
+    const toggleTheme = () => {
+        const newTheme = theme === 'light' ? 'dark' : 'light'
+        setTheme(newTheme)
+        localStorage.setItem('theme', newTheme)
+        document.documentElement.setAttribute('data-theme', newTheme)
+    }
 
     return (
         <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -30,13 +43,22 @@ export default function Navbar() {
                     <Link href="/auth/signup" className="btn btn-primary btn-sm">Join Now</Link>
                 </div>
 
-                <button
-                    className="hamburger"
-                    onClick={() => setMobileOpen(!mobileOpen)}
-                    aria-label="Toggle menu"
-                >
-                    <span></span><span></span><span></span>
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: 'auto' }}>
+                    <button
+                        onClick={toggleTheme}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--color-text)', fontSize: '1.25rem', cursor: 'pointer', padding: '0 0.5rem' }}
+                        title="Toggle Dark Mode"
+                    >
+                        {theme === 'light' ? '🌙' : '☀️'}
+                    </button>
+                    <button
+                        className="hamburger"
+                        onClick={() => setMobileOpen(!mobileOpen)}
+                        aria-label="Toggle menu"
+                    >
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
             </div>
 
             {/* Mobile Menu */}
