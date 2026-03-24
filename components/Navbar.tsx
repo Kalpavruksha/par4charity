@@ -39,18 +39,15 @@ export default function Navbar() {
                 </ul>
 
                 <div className="nav-actions">
-                    <Link href="/auth/login" className="btn btn-ghost btn-sm">Log In</Link>
-                    <Link href="/auth/signup" className="btn btn-primary btn-sm">Join Now</Link>
-                </div>
-
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginLeft: 'auto' }}>
                     <button
                         onClick={toggleTheme}
-                        style={{ background: 'transparent', border: 'none', color: 'var(--color-text)', fontSize: '1.25rem', cursor: 'pointer', padding: '0 0.5rem' }}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--color-text)', fontSize: '1.25rem', cursor: 'pointer', padding: '0 0.25rem', lineHeight: 1 }}
                         title="Toggle Dark Mode"
                     >
                         {theme === 'light' ? '🌙' : '☀️'}
                     </button>
+                    <Link href="/auth/login" className="btn btn-ghost btn-sm">Log In</Link>
+                    <Link href="/auth/signup" className="btn btn-primary btn-sm">Join Now</Link>
                     <button
                         className="hamburger"
                         onClick={() => setMobileOpen(!mobileOpen)}

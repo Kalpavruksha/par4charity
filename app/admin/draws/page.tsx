@@ -106,16 +106,16 @@ export default function AdminDrawsPage() {
         try {
             const draw = draws.find(d => d.id === drawId)
             if (!draw) return
-            // Get entries for this draw month
+            // Get entries for this draw month - use THE SAME winning numbers already stored
             const { data: subs } = await supabase.from('subscriptions').select('user_id').eq('status', 'active')
             const { data: scores } = await supabase.from('golf_scores').select('user_id, score')
             const { data: { user } } = await supabase.auth.getUser()
 
-            // Build user score map
+            // Build user score map — include anyone with at least 3 scores
             const userScoreMap: Record<string, number[]> = {}
             for (const sub of subs || []) {
                 const userScores = scores?.filter(s => s.user_id === sub.user_id).map(s => s.score) || []
-                if (userScores.length >= 5) userScoreMap[sub.user_id] = userScores
+                if (userScores.length >= 3) userScoreMap[sub.user_id] = userScores
             }
 
             // Create draw entries
