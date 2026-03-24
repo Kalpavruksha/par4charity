@@ -29,6 +29,7 @@ export default function ScoresPage() {
             .select('*')
             .eq('user_id', user.id)
             .order('played_at', { ascending: false })
+            .order('created_at', { ascending: false })
         setScores(data || [])
         setFetching(false)
     }

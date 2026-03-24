@@ -35,7 +35,7 @@ export default function AdminUsersPage() {
 
     const openUserModal = async (user: User) => {
         setEditUser(user)
-        const { data } = await supabase.from('golf_scores').select('*').eq('user_id', user.id).order('played_at', { ascending: false })
+        const { data } = await supabase.from('golf_scores').select('*').eq('user_id', user.id).order('played_at', { ascending: false }).order('created_at', { ascending: false })
         setScores(data || [])
     }
 
@@ -43,7 +43,7 @@ export default function AdminUsersPage() {
         if (!editScore) return
         await supabase.from('golf_scores').update({ score: editScore.score, played_at: editScore.played_at }).eq('id', editScore.id)
         setEditScore(null)
-        const { data } = await supabase.from('golf_scores').select('*').eq('user_id', editUser!.id).order('played_at', { ascending: false })
+        const { data } = await supabase.from('golf_scores').select('*').eq('user_id', editUser!.id).order('played_at', { ascending: false }).order('created_at', { ascending: false })
         setScores(data || [])
     }
 
