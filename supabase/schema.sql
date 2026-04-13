@@ -3,7 +3,7 @@
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
+ 
 -- Clean up existing tables and functions to prevent "already exists" errors
 DROP TABLE IF EXISTS public.charity_contributions CASCADE;
 DROP TABLE IF EXISTS public.winners CASCADE;
