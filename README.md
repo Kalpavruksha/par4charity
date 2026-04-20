@@ -109,7 +109,7 @@ graph TD
 8. A green banner appears: *"✅ All 5 scores entered. You are eligible for this month's draw!"*
 
 > **Rolling System:** Adding a 6th score automatically deletes the oldest one — enforced by a PostgreSQL database trigger (`enforce_score_limit`), not just client-side logic.
-
+ 
 ---
 
 #### Step 4 — View Your Charity Contribution
