@@ -1,7 +1,7 @@
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
-
+ 
 export default function DrawsPublicPage() {
     const now = new Date()
     const nextDraw = new Date(now.getFullYear(), now.getMonth() + 1, 0)
