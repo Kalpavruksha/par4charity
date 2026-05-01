@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-    
+     
 export const metadata: Metadata = {
   title: 'Par4Charity — Golf. Win. Give.',
   description: 'Subscribe to play monthly prize draws with your golf Stableford scores. Every subscription supports a charity of your choice.',
