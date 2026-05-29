@@ -1,7 +1,7 @@
 # Par4Charity ⛳💚
 ### Golf Subscription & Charity Draw Platform
 **Developed for the Digital Heroes Selection Process · Full-Stack Trainee Assignment**
-        
+         
 > A production-ready SaaS platform that combines golf score tracking, algorithmic monthly prize draws, and charitable giving — built on Next.js 14, Supabase, and Stripe.
  
 ---
