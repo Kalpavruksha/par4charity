@@ -1,7 +1,7 @@
 export async function sendEmail({ to, subject, html }: { to: string; subject: string; html: string }) {
     // If a Resend API key is detected, it will actually shoot the email.
     // Otherwise, this operates in 'dry-run' simulation mode which satisfies PRD requirements.
-  
+   
     console.log('\n=======================================')
     console.log('📧 [EMAIL DISPATCHER TRIGGERED]')
     console.log(`📡 To: ${to}`)
